@@ -1,0 +1,40 @@
+<div class="parking-container">
+                <?php
+                $parkingSlots = array("1", "2", "3", "4", "5");
+                foreach ($parkingSlots as $slotOption) {
+                    $reservedClass = '';
+                    foreach ($result as $reservation) {
+                        if ($reservation['slot'] == $slotOption && $reservation['date'] == $editData['date']) {
+                            $reservedClass = 'reserved';
+                            break;
+                        }
+                    }
+
+                    echo "<div class='parking-slot $reservedClass' data-slot='$slotOption'>$slotOption</div>";
+                }
+                ?>
+            </div>
+
+            <script>
+                // Add JavaScript to handle slot selection
+                document.querySelectorAll('.parking-slot').forEach(function (slot) {
+                    slot.addEventListener('click', function () {
+                        // Remove the 'reserved' class from all slots
+                        document.querySelectorAll('.parking-slot').forEach(function (otherSlot) {
+                            otherSlot.classList.remove('reserved');
+                        });
+
+                        // Add the 'reserved' class to the clicked slot
+                        slot.classList.add('reserved');
+
+                        // Update the hidden input value with the selected slot
+                        document.querySelector('input[name="updatedSlot"]').value = slot.getAttribute('data-slot');
+
+                        // Show the update button when a slot is clicked
+                        document.querySelector('button[name="updateReservation"]').style.display = 'block';
+                    });
+                });
+            </script>
+
+            <button type="submit" name="updateReservation" style="display: none;">Update</button>
+        </form>
